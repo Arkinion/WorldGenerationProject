@@ -9,6 +9,7 @@ package com.mycompany.worldgenerationproject.GUI.Math;
  *
  * @author rose_880118
  */
-public class Cell {
+public class Cell
+{
     
 }
