@@ -47,6 +47,25 @@ public class VoronoiDiagram
         if (!contains(c))
         {
             
+            for (Cell cell : cells)
+            {
+                
+                Vector2 between = Vector2.sub(cell.getSite(), c.getSite());
+                Vector2 mid = Vector2.add(cell.getSite(), between);
+                
+                if (cell.contains(mid))
+                {
+                    Vector2 slope = Vector2.rotate(between, (float)Math.PI).normalize();
+                    Line newEdge = new Line(mid);
+                    newEdge.bound(bounds, slope);
+                    
+                    
+                    
+                    
+                }
+                
+            }
+            
         }
     }
     
