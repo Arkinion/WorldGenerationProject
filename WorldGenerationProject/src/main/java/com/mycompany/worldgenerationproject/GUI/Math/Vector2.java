@@ -95,6 +95,18 @@ public class Vector2
         return new Vector2(x, y);
     }
     
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof Vector2)
+        {
+            Vector2 v = (Vector2)o;
+            if (x == v.getX() && y == v.getY())
+                return true;
+        }
+        return false;
+    }
+    
     /*
      * Returns the magnitude of this vector.
     */
@@ -124,6 +136,19 @@ public class Vector2
         }
         
         mult(newMag);
+        
+        return this;
+    }
+    
+    /*
+     * Limits the magnitude of this vector to the max value given.
+    */
+    public Vector2 limit(float max)
+    {
+        if (mag() > max)
+        {
+            setMag(max);
+        }
         
         return this;
     }
