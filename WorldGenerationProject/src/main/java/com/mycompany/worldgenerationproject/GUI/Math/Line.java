@@ -26,6 +26,12 @@ public class Line
         B = new Vector2();
     }
     
+    public Line(Vector2 A_)
+    {
+        A = A_;
+        B = new Vector2();
+    }
+    
     public Line(Vector2 A_, Vector2 B_)
     {
         A = A_;
@@ -108,13 +114,12 @@ public class Line
         return output;
     }
     
-    public void bound(Rect box)
+    public void bound(Rect box, Vector2 slope)
     {
         float x1;
         float y1;
         float x2;
         float y2;
-        Vector2 slope = Vector2.sub(B, A).normalize();
 
         if (slope.getX() == 0)
         {
@@ -125,10 +130,15 @@ public class Line
         }
         else
         {
-            x1 = (box.getxMin() - A.getX()) / slope.getX();
-            y1 = (box.getyMin() - A.getY()) / slope.getY();
-            x2 = (box.getxMax() - A.getX()) / slope.getX();
-            y2 = (box.getyMax() - A.getY()) / slope.getY();
+            float xt1 = (box.getxMin() - A.getX()) / slope.getX();
+            float yt1 = (box.getyMin() - A.getY()) / slope.getY();
+            float xt2 = (box.getxMax() - A.getX()) / slope.getX();
+            float yt2 = (box.getyMax() - A.getY()) / slope.getY();
+            
+            x1 = Vector2.add(A, Vector2.mult(slope, xt1)).getX();
+            y1 = Vector2.add(A, Vector2.mult(slope, yt1)).getY();
+            x2 = Vector2.add(A, Vector2.mult(slope, xt2)).getX();
+            y2 = Vector2.add(A, Vector2.mult(slope, yt2)).getY();
         }
 
         A = new Vector2(x1, y1);
