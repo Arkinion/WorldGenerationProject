@@ -44,30 +44,49 @@ public class VoronoiDiagram
     
     public void add(Cell c)
     {
-        if (!contains(c))
+        for (Cell cell : cells)
         {
-            
-            for (Cell cell : cells)
+
+            Vector2 between = Vector2.sub(cell.getSite(), c.getSite());
+            Vector2 mid = Vector2.add(cell.getSite(), between);
+            Vector2 slope = Vector2.rotate(between, (float)Math.PI).normalize();
+
+            for (Line e : cell.getEdges())
             {
+                Vector2 siteVec = Vector2.add(e.getA(), cell.getSite()).normalize();
+                Vector2 midVec = Vector2.add(e.getA(), mid).normalize();
+                Vector2 edgeVec = Vector2.add(e.getA(), e.asVector()).normalize();
+
+                float spatialEdge = siteVec.cross(edgeVec);
+                float spatialMid = siteVec.cross(midVec);
                 
-                Vector2 between = Vector2.sub(cell.getSite(), c.getSite());
-                Vector2 mid = Vector2.add(cell.getSite(), between);
-                Vector2 slope = Vector2.rotate(between, (float)Math.PI).normalize();
+                Line l = new Line(mid);
+                l.bound(bounds, slope);
                 
-                for (Line e : cell.getEdges())
+                if (spatialEdge < 0 && spatialMid < 0)
                 {
-                    Vector2 siteVec = Vector2.add(e.getA(), cell.getSite());
-                    Vector2 midVec = Vector2.add(e.getA(), mid);
-                    Vector2 edgeVec = Vector2.add(e.getA(), e.asVector());
-                    
-                    float spatialSite = siteVec.dot(edgeVec);
-                    float spatialMid = midVec.dot(edgeVec);
-                    
-                    
-                    
-                    
+                    if (spatialEdge <= spatialMid)
+                    {
+                        Vector2 intersection = l.intersect(e);
+                        
+                        if (intersection != null)
+                        {
+                            
+                        }
+                    }
                 }
-                
+                else if (spatialEdge >= 0 && spatialMid >= 0)
+                {
+                    if (spatialEdge >= spatialMid)
+                    {
+                        Vector2 intersection = l.intersect(e);
+                        
+                        if (intersection != null)
+                        {
+                            
+                        }
+                    }
+                }
             }
             
             
