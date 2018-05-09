@@ -73,6 +73,11 @@ public class Line
         return Vector2.sub(B, A).normalize();
     }
     
+    public Vector2 asVector()
+    {
+        return Vector2.sub(B, A);
+    }
+    
     public Vector2 intersect(Line l)
     {
         Vector2 output;
