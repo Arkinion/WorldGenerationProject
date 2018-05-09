@@ -52,12 +52,16 @@ public class VoronoiDiagram
                 
                 Vector2 between = Vector2.sub(cell.getSite(), c.getSite());
                 Vector2 mid = Vector2.add(cell.getSite(), between);
+                Vector2 slope = Vector2.rotate(between, (float)Math.PI).normalize();
                 
-                if (cell.contains(mid))
+                for (Line e : cell.getEdges())
                 {
-                    Vector2 slope = Vector2.rotate(between, (float)Math.PI).normalize();
-                    Line newEdge = new Line(mid);
-                    newEdge.bound(bounds, slope);
+                    Vector2 siteVec = Vector2.add(e.getA(), cell.getSite());
+                    Vector2 midVec = Vector2.add(e.getA(), mid);
+                    Vector2 edgeVec = Vector2.add(e.getA(), e.asVector());
+                    
+                    float spatialSite = siteVec.dot(edgeVec);
+                    float spatialMid = midVec.dot(edgeVec);
                     
                     
                     
@@ -66,6 +70,8 @@ public class VoronoiDiagram
                 
             }
             
+            
+            //cells.add(c);
         }
     }
     
