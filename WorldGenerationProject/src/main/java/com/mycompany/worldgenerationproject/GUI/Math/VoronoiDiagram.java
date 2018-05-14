@@ -49,7 +49,7 @@ public class VoronoiDiagram
 
             Vector2 between = Vector2.sub(cell.getSite(), c.getSite());
             Vector2 mid = Vector2.add(cell.getSite(), between);
-            Vector2 slope = Vector2.rotate(between, (float)Math.PI).normalize();
+            Vector2 slope = Vector2.rotate(between, Math.PI).normalize();
 
             for (Line e : cell.getEdges())
             {
@@ -57,8 +57,8 @@ public class VoronoiDiagram
                 Vector2 midVec = Vector2.add(e.getA(), mid).normalize();
                 Vector2 edgeVec = Vector2.add(e.getA(), e.asVector()).normalize();
 
-                float spatialEdge = siteVec.cross(edgeVec);
-                float spatialMid = siteVec.cross(midVec);
+                double spatialEdge = siteVec.cross(edgeVec);
+                double spatialMid = siteVec.cross(midVec);
                 
                 Line l = new Line(mid);
                 l.bound(bounds, slope);

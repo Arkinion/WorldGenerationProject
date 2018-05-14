@@ -18,8 +18,8 @@ public class Vector2
     /*
      * Instance variables.
     */
-    private float x;
-    private float y;
+    private double x;
+    private double y;
     
     
     
@@ -38,7 +38,7 @@ public class Vector2
     /*
      * Constructs a Vector2 with the given x and y values.
     */
-    public Vector2(float x_, float y_)
+    public Vector2(double x_, double y_)
     {
         x = x_;
         y = y_;
@@ -52,7 +52,7 @@ public class Vector2
     /*
      * Gets the x of this vector.
     */
-    public float getX()
+    public double getX()
     {
         return x;
     }
@@ -60,7 +60,7 @@ public class Vector2
     /*
      * Sets the x of this vector.
     */
-    public void setX(float x)
+    public void setX(double x)
     {
         this.x = x;
     }
@@ -68,7 +68,7 @@ public class Vector2
     /*
      * Gets the y of this vector.
     */
-    public float getY()
+    public double getY()
     {
         return y;
     }
@@ -76,7 +76,7 @@ public class Vector2
     /*
      * Sets the y of this vector.
     */
-    public void setY(float y)
+    public void setY(double y)
     {
         this.y = y;
     }
@@ -110,15 +110,15 @@ public class Vector2
     /*
      * Returns the magnitude of this vector.
     */
-    public float mag()
+    public double mag()
     {
-        return (float)Math.sqrt(x * x + y * y);
+        return Math.sqrt(x * x + y * y);
     }
     
     /*
      * Returns the square magnitude of this vector (saves on computational complexity).
     */
-    public float magSq()
+    public double magSq()
     {
         return x * x + y * y;
     }
@@ -126,9 +126,9 @@ public class Vector2
     /*
      * Scales this vector out or in to a given magnitude.
     */
-    public Vector2 setMag(float newMag)
+    public Vector2 setMag(double newMag)
     {
-        float mag = mag();
+        double mag = mag();
         
         if (mag != 1)
         {
@@ -143,7 +143,7 @@ public class Vector2
     /*
      * Limits the magnitude of this vector to the max value given.
     */
-    public Vector2 limit(float max)
+    public Vector2 limit(double max)
     {
         if (mag() > max)
         {
@@ -158,7 +158,7 @@ public class Vector2
     */
     public Vector2 normalize()
     {
-        float mag = mag();
+        double mag = mag();
         
         if (mag != 0)
             div(mag);
@@ -191,7 +191,7 @@ public class Vector2
     /*
      * Multiplies this vector by a number.
     */
-    public Vector2 mult(float n)
+    public Vector2 mult(double n)
     {
         x *= n;
         y *= n;
@@ -202,7 +202,7 @@ public class Vector2
     /*
      * Divides this vector by a number.
     */
-    public Vector2 div(float n)
+    public Vector2 div(double n)
     {
         if (n == 0)
             return null;
@@ -216,7 +216,7 @@ public class Vector2
     /*
      * Linearly interpolates this vector to another vector by an amount.
     */
-    public Vector2 lerp(Vector2 v, float amt)
+    public Vector2 lerp(Vector2 v, double amt)
     {
         mult(amt);
         add(v.clone().mult(1 - amt));
@@ -227,13 +227,13 @@ public class Vector2
     /*
      * Rotates this vector by an angle given in radians.
     */
-    public Vector2 rotate(float theta)
+    public Vector2 rotate(double theta)
     {
-        float cos = (float)Math.cos(theta);
-        float sin = (float)Math.sin(theta);
+        double cos = Math.cos(theta);
+        double sin = Math.sin(theta);
         
-        float newX = x * cos - y * sin;
-        float newY = x * sin + y * cos;
+        double newX = x * cos - y * sin;
+        double newY = x * sin + y * cos;
         
         x = newX;
         y = newY;
@@ -244,7 +244,7 @@ public class Vector2
     /*
      * Returns the dot product of this vector and another.
     */
-    public float dot(Vector2 v)
+    public double dot(Vector2 v)
     {
         return x * v.getX() + y * v.getY();
     }
@@ -252,7 +252,7 @@ public class Vector2
     /*
      * Returns the cross product of this vector and another.
     */
-    public float cross(Vector2 v)
+    public double cross(Vector2 v)
     {
         return x * v.getY() - y * v.getX();
     }
@@ -260,10 +260,10 @@ public class Vector2
     /*
      * Returns the angle between this vector and another.
     */
-    public float angleBetween(Vector2 v)
+    public double angleBetween(Vector2 v)
     {
-        float dot = dot(v);
-        float theta = (float)Math.acos(dot / (mag() * v.mag()));
+        double dot = dot(v);
+        double theta = Math.acos(dot / (mag() * v.mag()));
         
         return theta;
     }
@@ -271,18 +271,18 @@ public class Vector2
     /*
      * Returns the distance between this vector and another (treating them as points).
     */
-    public float dist(Vector2 v)
+    public double dist(Vector2 v)
     {
-        float inside = (v.getX() - x) + (v.getY() - y);
-        return (float)Math.sqrt(inside);
+        double inside = (v.getX() - x) + (v.getY() - y);
+        return Math.sqrt(inside);
     }
     
     /*
      * Returns the heading (angle) of this vector in radians.
     */
-    public float heading()
+    public double heading()
     {
-        return (float)Math.atan(y / x);
+        return Math.atan(y / x);
     }
     
     
@@ -295,8 +295,8 @@ public class Vector2
     */
     public static Vector2 add(Vector2 v1, Vector2 v2)
     {
-        float newX = v1.getX() + v2.getX();
-        float newY = v1.getY() + v2.getY();
+        double newX = v1.getX() + v2.getX();
+        double newY = v1.getY() + v2.getY();
         
         return new Vector2(newX, newY);
     }
@@ -306,8 +306,8 @@ public class Vector2
     */
     public static Vector2 sub(Vector2 v1, Vector2 v2)
     {
-        float newX = v1.getX() - v2.getX();
-        float newY = v1.getY() - v2.getY();
+        double newX = v1.getX() - v2.getX();
+        double newY = v1.getY() - v2.getY();
         
         return new Vector2(newX, newY);
     }
@@ -315,10 +315,10 @@ public class Vector2
     /*
      * Returns a vector multiplied by a number.
     */
-    public static Vector2 mult(Vector2 v1, float n)
+    public static Vector2 mult(Vector2 v1, double n)
     {
-        float newX = v1.getX() * n;
-        float newY = v1.getY() * n;
+        double newX = v1.getX() * n;
+        double newY = v1.getY() * n;
         
         return new Vector2(newX, newY);
     }
@@ -326,13 +326,13 @@ public class Vector2
     /*
      * Returns a vector divided by a number.
     */
-    public static Vector2 div(Vector2 v1, float n)
+    public static Vector2 div(Vector2 v1, double n)
     {
         if (n == 0)
             return null;
         
-        float newX = v1.getX() / n;
-        float newY = v1.getY() / n;
+        double newX = v1.getX() / n;
+        double newY = v1.getY() / n;
         
         return new Vector2(newX, newY);
     }
@@ -340,7 +340,7 @@ public class Vector2
     /*
      * Returns a new vector linearly interpolated by the given amount.
     */
-    public static Vector2 lerp(Vector2 v1, Vector2 v2, float amt)
+    public static Vector2 lerp(Vector2 v1, Vector2 v2, double amt)
     {
         Vector2 comp1 = v1.clone().mult(amt);
         Vector2 comp2 = (v2.clone().mult(1 - amt));
@@ -351,13 +351,13 @@ public class Vector2
     /*
      * Returns a new unit vector rotated by a number of radians.
     */
-    public static Vector2 rotate(Vector2 v, float theta)
+    public static Vector2 rotate(Vector2 v, double theta)
     {
-        float cos = (float)Math.cos(theta);
-        float sin = (float)Math.sin(theta);
+        double cos = Math.cos(theta);
+        double sin = Math.sin(theta);
         
-        float x = v.getX() * cos - v.getY() * sin;
-        float y = v.getX() * sin + v.getY() * cos;
+        double x = v.getX() * cos - v.getY() * sin;
+        double y = v.getX() * sin + v.getY() * cos;
         
         return new Vector2(x, y);
     }
@@ -365,7 +365,7 @@ public class Vector2
     /*
      * Returns the dot product of two vectors.
     */
-    public static float dot(Vector2 v1, Vector2 v2)
+    public static double dot(Vector2 v1, Vector2 v2)
     {
         return v1.getX() * v2.getX() + v1.getY() * v2.getY();
     }
@@ -373,7 +373,7 @@ public class Vector2
     /*
      * Returns the cross product of two vectors.
     */
-    public static float cross(Vector2 v1, Vector2 v2)
+    public static double cross(Vector2 v1, Vector2 v2)
     {
         return v1.getX() * v2.getY() - v1.getY() * v2.getX();
     }
@@ -381,10 +381,10 @@ public class Vector2
     /*
      * Returns the angle between two vectors in radians.
     */
-    public static float angleBetween(Vector2 v1, Vector2 v2)
+    public static double angleBetween(Vector2 v1, Vector2 v2)
     {
-        float dot = v1.dot(v2);
-        float theta = (float)Math.acos(dot / (v1.mag() * v2.mag()));
+        double dot = v1.dot(v2);
+        double theta = Math.acos(dot / (v1.mag() * v2.mag()));
         
         return theta;
     }
@@ -392,10 +392,10 @@ public class Vector2
     /*
      * Returns the distance between two vectors (treating them as points).
     */
-    public static float dist(Vector2 v1, Vector2 v2)
+    public static double dist(Vector2 v1, Vector2 v2)
     {
-        float inside = (v2.getX() - v1.getX()) + (v2.getY() - v1.getY());
-        return (float)Math.sqrt(inside);
+        double inside = (v2.getX() - v1.getX()) + (v2.getY() - v1.getY());
+        return Math.sqrt(inside);
     }
     
     /*
@@ -403,8 +403,8 @@ public class Vector2
     */
     public static Vector2 random()
     {
-        float x = (float)Math.random();
-        float y = (float)Math.random();
+        double x = Math.random();
+        double y = Math.random();
         
         Vector2 rand = new Vector2(x, y);
         rand.normalize();

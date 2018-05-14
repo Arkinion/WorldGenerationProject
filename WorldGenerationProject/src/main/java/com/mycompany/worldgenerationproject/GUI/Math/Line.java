@@ -82,16 +82,16 @@ public class Line
     {
         Vector2 output;
 
-        float a1 = B.getY() - A.getY();
-        float b1 = A.getX() - B.getX();
-        float c1 = a1 * A.getX() + b1 * A.getY();
+        double a1 = B.getY() - A.getY();
+        double b1 = A.getX() - B.getX();
+        double c1 = a1 * A.getX() + b1 * A.getY();
 
-        float a2 = l.getB().getY() - l.getA().getY();
-        float b2 = l.getA().getX() - l.getB().getX();
-        float c2 = a2 * l.getA().getX() + b2 * l.getA().getY();
+        double a2 = l.getB().getY() - l.getA().getY();
+        double b2 = l.getA().getX() - l.getB().getX();
+        double c2 = a2 * l.getA().getX() + b2 * l.getA().getY();
 
 
-        float det = a1 * b2 - a2 * b1;
+        double det = a1 * b2 - a2 * b1;
 
         if (det == 0)
         {
@@ -100,8 +100,8 @@ public class Line
         }
         else
         {
-            float x = (b2 * c1 - b1 * c2) / det;
-            float y = (a1 * c1 - a2 * c1) / det;
+            double x = (b2 * c1 - b1 * c2) / det;
+            double y = (a1 * c1 - a2 * c1) / det;
             output = new Vector2(x, y);
         }
 
@@ -121,10 +121,10 @@ public class Line
     
     public void bound(Rect box, Vector2 slope)
     {
-        float x1;
-        float y1;
-        float x2;
-        float y2;
+        double x1;
+        double y1;
+        double x2;
+        double y2;
 
         if (slope.getX() == 0)
         {
@@ -135,10 +135,10 @@ public class Line
         }
         else
         {
-            float xt1 = (box.getxMin() - A.getX()) / slope.getX();
-            float yt1 = (box.getyMin() - A.getY()) / slope.getY();
-            float xt2 = (box.getxMax() - A.getX()) / slope.getX();
-            float yt2 = (box.getyMax() - A.getY()) / slope.getY();
+            double xt1 = (box.getxMin() - A.getX()) / slope.getX();
+            double yt1 = (box.getyMin() - A.getY()) / slope.getY();
+            double xt2 = (box.getxMax() - A.getX()) / slope.getX();
+            double yt2 = (box.getyMax() - A.getY()) / slope.getY();
             
             x1 = Vector2.add(A, Vector2.mult(slope, xt1)).getX();
             y1 = Vector2.add(A, Vector2.mult(slope, yt1)).getY();
