@@ -414,14 +414,60 @@ public class Voronoi
 	return(a1*x*x + b1*x + c1);
     }
 
-    private void checkCircle(VParabola p2)
+    private void checkCircle(VParabola b)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        VParabola lp = VParabola.getLeftParent(b);
+        VParabola rp = VParabola.getRightParent(b);
+        
+        VParabola a = VParabola.getLeftChild(lp);
+        VParabola c = VParabola.getRightChild(rp);
+        
+        if (a == null
+                || b == null
+                || a.getSite() == c.getSite())
+            return;
+        
+        Vector2 s;
+        s = getEdgeIntersection(lp.getEdge(), rp.getEdge());
+        if (s == null) return;
+        
+        double dx = a.getSite().getX() - s.getX();
+        double dy = a.getSite().getY() - s.getY();
+        
+        double d = Math.sqrt( (dx*dx) + (dy*dy) );
+        
+        if (s.getY() - d >= ly)
+            return;
+        
+        VEvent e = new VEvent( new Vector2(s.getX(), s.getY() - d), false);
+        points.add(e.getPoint());
+        b.setcEvent(e);
+        e.setArch(b);
+        queue.add(e);
+        
     }
     
     private Vector2 getEdgeIntersection(VEdge a, VEdge b)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        double x = (b.getG() - a.getG()) / (a.getF() - b.getF());
+        double y = a.getF() * x + a.getG();
+        
+        if ( (x - a.getStart().getX()) / a.getDirection().getX() < 0)
+            return null;
+        if ( (y - a.getStart().getY()) / a.getDirection().getY() < 0)
+            return null;
+        
+        if ( (x - b.getStart().getX()) / b.getDirection().getX() < 0)
+            return null;
+        if ( (y - b.getStart().getY()) / b.getDirection().getY() < 0)
+            return null;
+        
+        Vector2 p = new Vector2(x, y);
+        points.add(p);
+        return p;
+        
     }
     
 }
