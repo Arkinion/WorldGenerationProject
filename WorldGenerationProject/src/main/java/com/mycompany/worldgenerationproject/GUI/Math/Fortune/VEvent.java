@@ -14,10 +14,10 @@ import com.mycompany.worldgenerationproject.GUI.Math.Vector2;
 class VEvent implements Comparable
 {
     
-    Vector2 point;
-    boolean pe;
-    double y;
-    VParabola arch;
+    private Vector2 point;
+    private boolean pe;
+    private double y;
+    private VParabola arch;
     
     
     
