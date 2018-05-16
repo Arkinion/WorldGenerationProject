@@ -8,6 +8,7 @@ package com.mycompany.worldgenerationproject.GUI.Math.Fortune;
 import com.mycompany.worldgenerationproject.GUI.Math.Vector2;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -147,6 +148,8 @@ public class Voronoi
         width = w;
         height = h;
         root = null;
+        deleted = new HashSet<VEvent>();
+        points = new ArrayList<Vector2>();
         
         edges = new ArrayList<VEdge>();
         queue = new PriorityQueue<VEvent>(places.size(), new Comparator()
@@ -424,7 +427,7 @@ public class Voronoi
         VParabola c = VParabola.getRightChild(rp);
         
         if (a == null
-                || b == null
+                || c == null
                 || a.getSite() == c.getSite())
             return;
         

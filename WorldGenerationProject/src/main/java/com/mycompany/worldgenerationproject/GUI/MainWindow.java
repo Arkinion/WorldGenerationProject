@@ -5,19 +5,37 @@
  */
 package com.mycompany.worldgenerationproject.GUI;
 
+import com.mycompany.worldgenerationproject.GUI.Math.Fortune.Voronoi;
+import com.mycompany.worldgenerationproject.GUI.Math.Vector2;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author rose_880118
  */
 public class MainWindow extends javax.swing.JFrame
 {
-
+    
+    Voronoi diagram;
+    
     /**
      * Creates new form MainWindow
      */
     public MainWindow()
     {
+        
         initComponents();
+        
+        diagram = new Voronoi();
+        
+        List<Vector2> sites = new ArrayList<Vector2>();
+        sites.add(new Vector2(0 , 3 ));
+        sites.add(new Vector2(3 , 3 ));
+        sites.add(new Vector2(13, 14));
+        
+        diagram.getEdges(sites, 16, 16);
+        
     }
 
     /**
