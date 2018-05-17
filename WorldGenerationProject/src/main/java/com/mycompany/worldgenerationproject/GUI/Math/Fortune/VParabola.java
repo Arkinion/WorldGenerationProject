@@ -141,6 +141,9 @@ public class VParabola
         VParabola par = p.getParent();
         VParabola pLast = p;
         
+        //if (par == null)
+        //    return null;
+        
         while (par.getLeft() == pLast)
         {
             if (par.getParent() == null)
@@ -156,6 +159,9 @@ public class VParabola
     {
         VParabola par = p.getParent();
         VParabola pLast = p;
+        
+        //if (par == null)
+        //    return null;
         
         while (par.getRight() == pLast)
         {

@@ -48,6 +48,19 @@ public class VEdge
     
     
     
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof VEdge)
+        {
+            VEdge e = (VEdge)o;
+            
+            if (start.equals(e.getStart()) && end.equals(e.getEnd()))
+                return true;
+        }
+        return false;
+    }
+    
     public Vector2 getStart()
     {
         return start;

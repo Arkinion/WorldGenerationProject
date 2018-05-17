@@ -37,6 +37,21 @@ class VEvent implements Comparable
     
     
     
+    /*
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof VEvent)
+        {
+            VEvent e = (VEvent)o;
+            
+            if (point.equals(e.getPoint()) && pe == e.isPe())
+                return true;
+        }
+        return false;
+    }
+    */
+    
     public Vector2 getPoint()
     {
         return point;
