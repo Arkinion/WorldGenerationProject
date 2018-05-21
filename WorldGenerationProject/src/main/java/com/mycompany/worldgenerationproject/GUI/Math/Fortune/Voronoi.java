@@ -198,6 +198,7 @@ public class Voronoi
             return;
         }
         
+        /*
         if (root.isLeaf() && root.getSite().getY() - p.getY() < 1)
         {
             Vector2 fp = root.getSite();
@@ -217,6 +218,7 @@ public class Voronoi
             
             return;
         }
+        */
         
         VParabola par = GetParabolaByX(p.getX());
         
@@ -233,21 +235,19 @@ public class Voronoi
         VEdge er = new VEdge(start, p, par.getSite());
         
         el.setNeighbor(er);
-        edges.add(el);
-        
-        par.setEdge(er);
+        er.setNeighbor(el);
+        par.setEdge(el);
         par.setLeaf(false);
         
         VParabola p0 = new VParabola(par.getSite());
         VParabola p1 = new VParabola(p);
         VParabola p2 = new VParabola(par.getSite());
         
-        par.setRight(p2);
-        par.setLeft(new VParabola());
-        par.getLeft().setEdge(el);
-        
-        par.getLeft().setLeft(p0);
-        par.getLeft().setRight(p1);
+        par.setLeft(p0);
+        par.setRight(new VParabola());
+        par.getRight().setEdge(er);
+        par.getRight().setLeft(p1);
+        par.getRight().setRight(p2);
         
         checkCircle(p0);
         checkCircle(p2);
@@ -265,6 +265,17 @@ public class Voronoi
         VParabola p0 = VParabola.getLeftChild(xl);
         VParabola p2 = VParabola.getRightChild(xr);
         
+        if (p0.getcEvent() != null)
+        {
+            queue.remove(p0.getcEvent());
+            p0.setcEvent(null);
+        }
+        if (p2.getcEvent() != null)
+        {
+            queue.remove(p2.getcEvent());
+            p2.setcEvent(null);
+        }
+        
         if (p0 == p2)
             System.out.println("Error: left and right parabolas have same focus.");
         
@@ -273,8 +284,10 @@ public class Voronoi
         
         xl.getEdge().setEnd(p);
         xr.getEdge().setEnd(p);
+        edges.add(xl.getEdge());
+        edges.add(xr.getEdge());
         
-        VParabola higher = null;
+        VParabola higher = new VParabola();
         VParabola par = p1;
         while (par != root)
         {
@@ -285,7 +298,6 @@ public class Voronoi
                 higher = xr;
         }
         higher.setEdge(new VEdge(p, p0.getSite(), p2.getSite()));
-        edges.add(higher.getEdge());
         
         VParabola gparent = p1.getParent().getParent();
         if (p1.getParent().getLeft() == p1)
@@ -316,14 +328,12 @@ public class Voronoi
         if (n.isLeaf())
             return;
         
-        double mx;
-        if (n.getEdge().getDirection().getX() > 0)
-            mx = Math.max(width, n.getEdge().getStart().getX() + 10);
-        else
-            mx = Math.max(0, n.getEdge().getStart().getX() - 10);
+        // Fix using reference Voronoi-master
+        double mx = getXOfEdge(n);
         
         Vector2 end = new Vector2(mx, mx * n.getEdge().getF() + n.getEdge().getG());
         n.getEdge().setEnd(end);
+        edges.add(n.getEdge());
         points.add(end);
         
         FinishEdge(n.getLeft());
