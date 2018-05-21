@@ -12,7 +12,7 @@ package com.mycompany.worldgenerationproject.GUI.Math;
 /*
  * Represents a vector in a 2d plane.
 */
-public class Vector2
+public class Vector2 implements Comparable<Vector2>
 {
     
     /*
@@ -106,6 +106,25 @@ public class Vector2
         }
         return false;
     }
+    
+    @Override
+    public int compareTo (Vector2 other)
+    {
+            if (getY() == other.getY())
+            {
+                if (getX() == other.getX()) return 0;
+                else if (getX() > other.getX()) return 1;
+                else return -1;
+            }
+            else if (getY() > other.getY())
+            {
+                return 1;
+            }
+            else
+            {
+		return -1;
+            }
+	}
     
     /*
      * Returns the magnitude of this vector.

@@ -11,7 +11,7 @@ import com.mycompany.worldgenerationproject.GUI.Math.Vector2;
  *
  * @author User
  */
-class VEvent implements Comparable
+class VEvent implements Comparable<VEvent>
 {
     
     private Vector2 point;
@@ -83,19 +83,9 @@ class VEvent implements Comparable
     
     
     @Override
-    public int compareTo(Object o)
+    public int compareTo(VEvent other)
     {
-        if (o instanceof VEvent)
-        {
-            VEvent e = (VEvent)o;
-            
-            
-            if (getY() < e.getY())
-                return 1;
-            else if (getY() > e.getY())
-                return -1;
-        }
-        return 0;
+        return other.getPoint().compareTo(point);
     }
     
 }

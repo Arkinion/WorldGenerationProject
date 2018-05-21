@@ -152,17 +152,7 @@ public class Voronoi
         points = new ArrayList<Vector2>();
         
         edges = new ArrayList<VEdge>();
-        queue = new PriorityQueue<VEvent>(places.size(), new Comparator()
-        {
-            @Override
-            public int compare(Object o1, Object o2)
-            {
-                VEvent e1 = (VEvent)o1;
-                VEvent e2 = (VEvent)o2;
-                
-                return e1.compareTo(e2);
-            }
-        });
+        queue = new PriorityQueue<VEvent>(places.size());
         
         for (Vector2 site : places)
         {
@@ -171,10 +161,9 @@ public class Voronoi
         
         
         
-        VEvent e;
         while (!queue.isEmpty())
         {
-            e = queue.poll();
+            VEvent e = queue.remove();
             ly = e.getPoint().getY();
             
             if (deleted.contains(e))
@@ -191,19 +180,14 @@ public class Voronoi
         
         FinishEdge(root);
         
-        Iterator<VEdge> iter = edges.iterator();
-        while(iter.hasNext())
+        for (VEdge e : edges)
         {
-            VEdge edge = iter.next();
-            
-            if (edge.getNeighbor() != null)
+            if (e.getNeighbor() != null)
             {
-                edge.setStart(edge.getNeighbor().getEnd());
-                edge.setNeighbor(null);
+                e.setStart(e.getNeighbor().getEnd());
+                e.setNeighbor(null);
             }
         }
-        
-        
         
         return edges;
         

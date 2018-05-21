@@ -35,7 +35,7 @@ public class VEdge
         start = start_;
         left = left_;
         right = right_;
-        direction = null;
+        direction = new Vector2(right.getY() - left.getY(), - (right.getX() - left.getX()));
         end = null;
         
         f = (right.getX() - left.getX()) / (left.getY() - right.getY());
