@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  *
@@ -59,11 +60,6 @@ public class Voronoi
     public List<VEdge> getEdges()
     {
         return edges;
-    }
-    
-    public void setEdges(List<VEdge> edges)
-    {
-        this.edges = edges;
     }
     
     public double getWidth()
@@ -141,14 +137,14 @@ public class Voronoi
     
     
     
-    public List<VEdge> getEdges(List<Vector2> sites, int w, int h)
+    public List<VEdge> buildEdges(List<Vector2> sites, int w, int h)
     {
         
         places = sites;
         width = w;
         height = h;
         root = null;
-        deleted = new HashSet<VEvent>();
+        deleted = new TreeSet<VEvent>();
         points = new ArrayList<Vector2>();
         
         edges = new ArrayList<VEdge>();
@@ -307,7 +303,7 @@ public class Voronoi
                 gparent.setRight(p1.getParent().getLeft());
         }
         
-        p1.setParent(null);
+        //p1.setParent(null);
         
         checkCircle(p0);
         checkCircle(p2);
