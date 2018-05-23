@@ -17,7 +17,7 @@ public class Line
     private Vector2 A;
     private Vector2 B;
     
-    
+    private Vector2 slope;
     
     
     
@@ -26,18 +26,14 @@ public class Line
     {
         A = new Vector2();
         B = new Vector2();
+        slope = new Vector2();
     }
     
-    public Line(Vector2 A_)
+    public Line(Vector2 A_, Vector2 slope_)
     {
         A = A_;
         B = new Vector2();
-    }
-    
-    public Line(Vector2 A_, Vector2 B_)
-    {
-        A = A_;
-        B = B_;
+        slope = slope_;
     }
     
     
@@ -65,15 +61,20 @@ public class Line
         this.B = B;
     }
     
-    
-    
-    
-    
-    
-    public Vector2 slope()
+    public Vector2 getSlope()
     {
-        return Vector2.sub(B, A).normalize();
+        return slope;
     }
+    
+    public void setSlope(Vector2 slope)
+    {
+        this.slope = slope;
+    }
+    
+    
+    
+    
+    
     
     public Vector2 asVector()
     {
@@ -150,6 +151,31 @@ public class Line
 
         A = new Vector2(x1, y1);
         B = new Vector2(x2, y2);
+    }
+    
+    
+    
+    
+    
+    
+    // Returns a line that is a copy of the given Line with a perpendicular slope.
+    public static Line perLine(Line l)
+    {
+        Line output;
+        
+        Vector2 slope = l.slope;
+        
+        double x = slope.getX();
+        double y;
+        
+        y = -x;
+        x = slope.getY();
+        
+        slope = new Vector2(x, y);
+        
+        output = new Line(l.A, slope);
+        
+        return output;
     }
     
 }

@@ -49,8 +49,8 @@ public class VoronoiDiagram
         {
 
             Vector2 between = Vector2.sub(cell.getSite(), c.getSite());
-            Vector2 mid = Vector2.add(cell.getSite(), between);
-            Vector2 slope = Vector2.rotate(between, Math.PI).normalize();
+            Vector2 mid = Vector2.add(cell.getSite(), between.div(2));
+            Line perLine = Line.perLine( new Line(mid, between.normalize()) );
 
             for (Line e : cell.getEdges())
             {
