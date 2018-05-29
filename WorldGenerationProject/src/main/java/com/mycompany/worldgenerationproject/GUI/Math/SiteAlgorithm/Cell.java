@@ -76,8 +76,8 @@ public class Cell
     {
         for (Line edge : edges)
         {
-            Vector2 v1 = Vector2.sub(site, edge.getA());
-            Vector2 v2 = Vector2.sub(edge.getB(), edge.getA());
+            Vector2 v1 = Vector2.sub(site, edge.getStart());
+            Vector2 v2 = Vector2.sub(edge.getEnd(), edge.getStart());
             
             if (v1.cross(v2) < 0)
             {
@@ -98,6 +98,11 @@ public class Cell
         }
         
         return true;
+    }
+    
+    public void addEdge(Line l)
+    {
+        edges.add(l);
     }
     
 }

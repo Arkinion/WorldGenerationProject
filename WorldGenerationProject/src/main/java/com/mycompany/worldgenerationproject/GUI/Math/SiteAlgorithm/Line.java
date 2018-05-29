@@ -24,18 +24,15 @@ public class Line
     
     
     
-    public Line()
-    {
-        A = new Vector2();
-        B = new Vector2();
-        slope = new Vector2();
-    }
+    
     
     public Line(Vector2 A_, Vector2 slope_)
     {
         A = A_;
-        B = new Vector2();
         slope = slope_;
+        
+        start = null;
+        end = null;
     }
     
     
@@ -63,6 +60,26 @@ public class Line
         this.slope = slope;
     }
     
+    public Vector2 getStart()
+    {
+        return start;
+    }
+    
+    public void setStart(Vector2 start)
+    {
+        this.start = start;
+    }
+    
+    public Vector2 getEnd()
+    {
+        return end;
+    }
+    
+    public void setEnd(Vector2 end)
+    {
+        this.end = end;
+    }
+    
     
     
     
@@ -76,45 +93,19 @@ public class Line
     public Vector2 intersect(Line l)
     {
         Vector2 output;
+        Vector2 B = l.getA();
 
-        double a1 = B.getY() - A.getY();
-        double b1 = A.getX() - B.getX();
-        double c1 = a1 * A.getX() + b1 * A.getY();
-
-        double a2 = l.getB().getY() - l.getA().getY();
-        double b2 = l.getA().getX() - l.getB().getX();
-        double c2 = a2 * l.getA().getX() + b2 * l.getA().getY();
-
-
-        double det = a1 * b2 - a2 * b1;
-
-        if (det == 0)
-        {
-            // They are parallel.
-            return null;
-        }
-        else
-        {
-            double x = (b2 * c1 - b1 * c2) / det;
-            double y = (a1 * c1 - a2 * c1) / det;
-            output = new Vector2(x, y);
-        }
-
-        if ((Math.min(A.getX(), B.getX()) <= output.getX()
-            && output.getX() <= Math.max(A.getX(), B.getX())
-            && Math.min(A.getY(), B.getY()) <= output.getY()
-            && output.getY() <= Math.max(A.getY(), B.getY())) &&
-            (Math.min(l.getA().getX(), l.getB().getX()) <= output.getX()
-            && output.getX() <= Math.max(l.getA().getX(), l.getB().getX())
-            && Math.min(l.getA().getY(), l.getB().getY()) <= output.getY()
-            && output.getY() <= Math.max(l.getA().getY(), l.getB().getY())))
-        {
-            return null;
-        }
-        return output;
+        double m1 = slope.getY()/slope.getX();
+        double m2 = l.slope.getY()/l.slope.getX();
+        
+        double x = ((m1*A.getY()) - (m2*B.getY()) - A.getY() + B.getY()) / (m1 - m2);
+        
+        double y = Vector2.add( A , Vector2.mult(slope,x-A.getX()) ).getY();
+        
+        return new Vector2(x, y);
     }
     
-    public void bound(Rect box, Vector2 slope)
+    public void bound(Rect box)
     {
         double x1;
         double y1;
@@ -135,10 +126,10 @@ public class Line
             double xt2 = (box.getxMax() - A.getX()) / slope.getX();
             double yt2 = (box.getyMax() - A.getY()) / slope.getY();
             
-            x1 = Vector2.add(A, Vector2.mult(slope, xt1)).getX();
-            y1 = Vector2.add(A, Vector2.mult(slope, yt1)).getY();
-            x2 = Vector2.add(A, Vector2.mult(slope, xt2)).getX();
-            y2 = Vector2.add(A, Vector2.mult(slope, yt2)).getY();
+            x1 = Vector2.add(A, Vector2.mult(slope.div(slope.getX()), xt1)).getX();
+            y1 = Vector2.add(A, Vector2.mult(slope.div(slope.getY()), yt1)).getY();
+            x2 = Vector2.add(A, Vector2.mult(slope.div(slope.getX()), xt2)).getX();
+            y2 = Vector2.add(A, Vector2.mult(slope.div(slope.getY()), yt2)).getY();
         }
 
         start = new Vector2(x1, y1);
