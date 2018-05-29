@@ -92,7 +92,6 @@ public class Line
     
     public Vector2 intersect(Line l)
     {
-        Vector2 output;
         Vector2 B = l.getA();
 
         double m1 = slope.getY()/slope.getX();
