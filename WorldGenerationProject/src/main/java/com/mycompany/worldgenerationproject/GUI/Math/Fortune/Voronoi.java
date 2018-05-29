@@ -329,7 +329,7 @@ public class Voronoi
             return;
         
         // Fix using reference Voronoi-master
-        double mx = getXOfEdge(n);
+        double mx = getXOfEdge(n, ly);
         
         Vector2 end = new Vector2(mx, mx * n.getEdge().getF() + n.getEdge().getG());
         n.getEdge().setEnd(end);

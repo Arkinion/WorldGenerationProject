@@ -50,7 +50,6 @@ public class VoronoiDiagram
 
             Vector2 between = Vector2.sub(cell.getSite(), c.getSite());
             Vector2 mid = Vector2.add(cell.getSite(), between.div(2));
-            Line perLine = Line.perLine( new Line(mid, between.normalize()) );
 
             for (Line e : cell.getEdges())
             {
@@ -58,15 +57,14 @@ public class VoronoiDiagram
                 Vector2 midVec = Vector2.add(e.getA(), mid).normalize();
                 Vector2 edgeVec = Vector2.add(e.getA(), e.asVector()).normalize();
 
-                double spatialEdge = siteVec.cross(edgeVec);
+                double spatialSite = edgeVec.cross(siteVec);
                 double spatialMid = siteVec.cross(midVec);
                 
-                Line l = new Line(mid);
-                l.bound(bounds, slope);
+                Line perLine = Line.perLine( new Line(mid, between.normalize()) );
                 
-                if (spatialEdge < 0 && spatialMid < 0)
+                if (spatialSite < 0 && spatialMid < 0)
                 {
-                    if (spatialEdge <= spatialMid)
+                    if (spatialSite <= spatialMid)
                     {
                         Vector2 intersection = l.intersect(e);
                         

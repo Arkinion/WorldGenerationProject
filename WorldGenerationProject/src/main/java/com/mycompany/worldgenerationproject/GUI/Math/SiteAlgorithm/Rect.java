@@ -5,6 +5,8 @@
  */
 package com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm;
 
+import com.mycompany.worldgenerationproject.GUI.Math.Vector2;
+
 /**
  *
  * @author User
@@ -81,6 +83,21 @@ public class Rect
     public void setyMax(double yMax)
     {
         this.yMax = yMax;
+    }
+    
+    
+    
+    
+    
+    
+    public boolean contains(Vector2 p)
+    {
+        if (p.getX() > xMin
+                && p.getX() < xMax
+                && p.getY() > yMin
+                && p.getY() < yMax)
+            return true;
+        return false;
     }
     
 }

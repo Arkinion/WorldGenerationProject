@@ -15,7 +15,9 @@ public class Line
 {
     
     private Vector2 A;
-    private Vector2 B;
+    
+    private Vector2 start;
+    private Vector2 end;
     
     private Vector2 slope;
     
@@ -51,16 +53,6 @@ public class Line
         this.A = A;
     }
     
-    public Vector2 getB()
-    {
-        return B;
-    }
-    
-    public void setB(Vector2 B)
-    {
-        this.B = B;
-    }
-    
     public Vector2 getSlope()
     {
         return slope;
@@ -78,7 +70,7 @@ public class Line
     
     public Vector2 asVector()
     {
-        return Vector2.sub(B, A);
+        return Vector2.sub(end, start);
     }
     
     public Vector2 intersect(Line l)
@@ -149,8 +141,8 @@ public class Line
             y2 = Vector2.add(A, Vector2.mult(slope, yt2)).getY();
         }
 
-        A = new Vector2(x1, y1);
-        B = new Vector2(x2, y2);
+        start = new Vector2(x1, y1);
+        end = new Vector2(x2, y2);
     }
     
     
