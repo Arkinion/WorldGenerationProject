@@ -54,8 +54,8 @@ public class VoronoiDiagram
             for (Line e : cell.getEdges())
             {
                 // MUST FIX
-                boolean startSet = false;
-                boolean endSet = false;
+                ArrayList<Vector2> startSide = new ArrayList<Vector2>();
+                ArrayList<Vector2> endSide = new ArrayList<Vector2>();
                 
                 Vector2 siteVec = Vector2.add(e.getA(), cell.getSite()).normalize();
                 Vector2 midVec = Vector2.add(e.getA(), mid).normalize();
@@ -76,59 +76,34 @@ public class VoronoiDiagram
                         if (intersection != null)
                         {
                             boolean isStart = true;
-                            boolean isPerStart = true;
                             Vector2 start = e.getStart();
                             Vector2 end = e.getEnd();
                             
-                            if (intersection.dist(start) > intersection.dist(end))
-                                isStart = false;
-                            if (intersection.dist(perLine.getStart()) > intersection.dist(perLine.getEnd()))
-                                isPerStart = false;
-                            
-                            if (startSet)
-                            {
-                                isPerStart = false;
-                            }
-                            if (endSet)
-                            {
-                                isPerStart = true;
-                            }
-                            
-                            // Deal with edge case where intersection is closer to start than end after start was changed
                             if (isStart)
                             {
                                 if (intersection.dist(cell.getSite()) < start.dist(cell.getSite()))
                                 {
                                     e.setStart(intersection);
-                                    if (isPerStart)
-                                    {
-                                        e.setStart(intersection);
-                                        perLine.setStart(intersection);
-                                    }
-                                    else
-                                    {
-                                        e.setStart(intersection);
-                                        perLine.setEnd(intersection);
-                                    }
                                 }
                             }
                             else
                             {
                                 if (intersection.dist(cell.getSite()) < end.dist(cell.getSite()))
                                 {
-                                    if (isPerStart)
-                                        if (intersection.dist(cell.getSite()) < intersection.dist(perLine.getStart()))
-                                        {
-                                            e.setEnd(intersection);
-                                            perLine.setStart(intersection);
-                                        }
-                                    else
-                                        if (intersection.dist(cell.getSite()) < intersection.dist(perLine.getEnd()))
-                                        {
-                                            e.setEnd(intersection);
-                                            perLine.setEnd(intersection);
-                                        }
+                                    e.setEnd(intersection);
                                 }
+                            }
+                            
+                            Vector2 sourceToStart = Vector2.sub(e.getStart(), e.getA());
+                            Vector2 sourceToInter = Vector2.sub(intersection, e.getA());
+                            
+                            if (compareDirections(sourceToStart, sourceToInter))
+                            {
+                                startSide.add(intersection);
+                            }
+                            else
+                            {
+                                endSide.add(intersection);
                             }
                             
                         }
@@ -167,6 +142,26 @@ public class VoronoiDiagram
             
             //cells.add(c);
         }
+    }
+    
+    // Returns true if the vectors are both in the same quadrant.
+    private boolean compareDirections(Vector2 x, Vector2 y)
+    {
+        if (x.getX() < 0 && y.getX() < 0)
+        {
+            if (x.getY() < 0 && y.getY() < 0)
+                return true;
+            else if (x.getY() >= 0 && y.getY() >= 0)
+                return true;
+        }
+        else if (x.getX() >= 0 && y.getX() >= 0)
+        {
+            if (x.getY() < 0 && y.getY() < 0)
+                return true;
+            else if (x.getY() >= 0 && y.getY() >= 0)
+                return true;
+        }
+        return false;
     }
     
     public boolean contains(Cell c)
