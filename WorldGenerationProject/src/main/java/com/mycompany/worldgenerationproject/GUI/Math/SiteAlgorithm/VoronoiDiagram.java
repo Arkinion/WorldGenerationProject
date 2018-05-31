@@ -91,11 +91,12 @@ public class VoronoiDiagram
                         // If the intersection exists (i.e. they aren't parallel)
                         if (intersection != null)
                         {
-                            // FIX (NOT ALWAYS CLOSEST, USE SIDE OF MIDPOINT LIKE IN NEW EDGE)
-                            boolean isStart;
-                            
+                            // Finds the vector from the center of the line to start
                             Vector2 midpointToEStart = Vector2.sub(e.getStart(), e.getA());
+                            // Finds the vector from the the center of the line to the intersection
                             Vector2 midpointToInter  = Vector2.sub(intersection, e.getA());
+                            
+                            // COMPARE TO MIDPOINT, NOT SITE
                             if (compareDirections(midpointToEStart, midpointToInter))
                             {
                                 if (intersection.dist(cell.getSite()) < e.getStart().dist(cell.getSite()))
