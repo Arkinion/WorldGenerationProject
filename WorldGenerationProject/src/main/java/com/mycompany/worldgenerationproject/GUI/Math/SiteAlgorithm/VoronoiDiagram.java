@@ -195,6 +195,7 @@ public class VoronoiDiagram
             
             // NOTE: CONSIDER THE CASE WHERE THE NEW EDGE IS NOT INCLUDED
             // FIND PROPERTIES OF THIS
+            // MAY BE COVERED
             
             
         }
