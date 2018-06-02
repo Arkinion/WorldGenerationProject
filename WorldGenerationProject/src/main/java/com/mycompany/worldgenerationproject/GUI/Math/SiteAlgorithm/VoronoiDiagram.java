@@ -53,10 +53,6 @@ public class VoronoiDiagram
             Vector2 between = Vector2.sub(cell.getSite(), c.getSite());
             // Finds the midpoint between the two cells
             Vector2 mid = Vector2.add(c.getSite(), between.div(2));
-            
-            // The points that exist on each side of the new edge
-            ArrayList<Vector2> startSide = new ArrayList<Vector2>();
-            ArrayList<Vector2> endSide = new ArrayList<Vector2>();
 
             // For all of the edges on the cell being looked at
             for (Line e : cell.getEdges())
@@ -96,31 +92,41 @@ public class VoronoiDiagram
                             // Finds the vector from the the center of the line to the intersection
                             Vector2 midpointToInter  = Vector2.sub(intersection, e.getA());
                             
-                            // COMPARE TO MIDPOINT, NOT SITE
+                            // Finding if the intersection is on the start side or end side of line
+                            // Runs if on the start side
                             if (compareDirections(midpointToEStart, midpointToInter))
                             {
-                                if (intersection.dist(cell.getSite()) < e.getStart().dist(cell.getSite()))
+                                // If the intersection is closer to the midpoint than the start
+                                if (intersection.dist(e.getA()) < e.getStart().dist(e.getA()))
                                     e.setStart(intersection);
                             }
+                            // Runs if it is on the end side
                             else
                             {
-                                if (intersection.dist(cell.getSite()) < e.getEnd().dist(cell.getSite()))
+                                // If the intersection is closer to the midpoint than the end
+                                if (intersection.dist(e.getA()) < e.getEnd().dist(e.getA()))
                                     e.setEnd(intersection);
                             }
                             
-                            Vector2 start = e.getStart();
-                            Vector2 end = e.getEnd();
-                            
+                            // Finds the vector between the midpoint of the new edge and its start
                             Vector2 sourceToStart = Vector2.sub(perLine.getStart(), perLine.getA());
+                            // Finds the vector between the midpoint of the new edge and its end
                             Vector2 sourceToInter = Vector2.sub(intersection, perLine.getA());
                             
+                            // Finding if the intersection is on the start side or end side of line
+                            // If the intersection is on the same side as the start
                             if (compareDirections(sourceToStart, sourceToInter))
                             {
-                                startSide.add(intersection);
+                                // If the intersection is closer to the new edge's midpoint than the start
+                                if (intersection.dist(perLine.getA()) < perLine.getStart().dist(perLine.getA()))
+                                    perLine.setStart(intersection);
                             }
+                            // If the intersection is on the same side as the start
                             else
                             {
-                                endSide.add(intersection);
+                                // If the intersection is closer to the new edge's midpoint than the end
+                                if (intersection.dist(perLine.getA()) < perLine.getEnd().dist(perLine.getA()))
+                                    perLine.setEnd(intersection);
                             }
                         }
                     }
@@ -132,48 +138,69 @@ public class VoronoiDiagram
                     // the site vector
                     if (spatialSite >= spatialMid)
                     {
+                        // Finds the intersection of the perpendicular line and this edge
                         Vector2 intersection = perLine.intersect(e);
                         
+                        // If the intersection exists (i.e. they aren't parallel)
                         if (intersection != null)
                         {
-                            boolean isStart = true;
-                            Vector2 start = e.getStart();
-                            Vector2 end = e.getEnd();
+                            // Finds the vector from the center of the line to start
+                            Vector2 midpointToEStart = Vector2.sub(e.getStart(), e.getA());
+                            // Finds the vector from the the center of the line to the intersection
+                            Vector2 midpointToInter  = Vector2.sub(intersection, e.getA());
                             
-                            if (intersection.dist(start) > intersection.dist(end))
-                                isStart = false;
-                            
-                            if (isStart)
+                            // Finding if the intersection is on the start side or end side of line
+                            // Runs if on the start side
+                            if (compareDirections(midpointToEStart, midpointToInter))
                             {
-                                if (intersection.dist(cell.getSite()) < start.dist(cell.getSite()))
+                                // If the intersection is closer to the midpoint than the start
+                                if (intersection.dist(e.getA()) < e.getStart().dist(e.getA()))
                                     e.setStart(intersection);
                             }
+                            // Runs if it is on the end side
                             else
                             {
-                                if (intersection.dist(cell.getSite()) < end.dist(cell.getSite()))
+                                // If the intersection is closer to the midpoint than the end
+                                if (intersection.dist(e.getA()) < e.getEnd().dist(e.getA()))
                                     e.setEnd(intersection);
                             }
                             
+                            // Finds the vector between the midpoint of the new edge and its start
+                            Vector2 sourceToStart = Vector2.sub(perLine.getStart(), perLine.getA());
+                            // Finds the vector between the midpoint of the new edge and its end
+                            Vector2 sourceToInter = Vector2.sub(intersection, perLine.getA());
                             
-                            Vector2 sourceToStart = Vector2.sub(e.getStart(), e.getA());
-                            Vector2 sourceToInter = Vector2.sub(intersection, e.getA());
-                            
+                            // Finding if the intersection is on the start side or end side of line
+                            // If the intersection is on the same side as the start
                             if (compareDirections(sourceToStart, sourceToInter))
                             {
-                                startSide.add(intersection);
+                                // If the intersection is closer to the new edge's midpoint than the start
+                                if (intersection.dist(perLine.getA()) < perLine.getStart().dist(perLine.getA()))
+                                    perLine.setStart(intersection);
                             }
+                            // If the intersection is on the same side as the start
                             else
                             {
-                                endSide.add(intersection);
+                                // If the intersection is closer to the new edge's midpoint than the end
+                                if (intersection.dist(perLine.getA()) < perLine.getEnd().dist(perLine.getA()))
+                                    perLine.setEnd(intersection);
                             }
                         }
                     }
                 }
             }
             
+            // Here the new edge will be added
             
-            //cells.add(c);
+            
+            // NOTE: CONSIDER THE CASE WHERE THE NEW EDGE IS NOT INCLUDED
+            // FIND PROPERTIES OF THIS
+            
+            
         }
+        
+        // Adding the new cell
+        cells.add(c);
     }
     
     // Returns true if the vectors are both in the same quadrant.
