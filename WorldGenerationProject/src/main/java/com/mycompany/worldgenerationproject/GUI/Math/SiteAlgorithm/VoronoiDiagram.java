@@ -11,6 +11,7 @@ import com.mycompany.worldgenerationproject.GUI.Math.DelaunayAlgorithm.Line;
 import com.mycompany.worldgenerationproject.GUI.Math.DelaunayAlgorithm.VoronoiModel;
 import com.mycompany.worldgenerationproject.GUI.Math.Vector2;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class VoronoiDiagram
         Vector2 v = model.getDimensions();
         bounds = new Rect(0, v.getX(), 0, v.getY());
         
-        List<Vector2> sites = model.getSites();
+        HashSet<Vector2> sites = model.getSites();
         cells = new ArrayList<Cell>();
         
         for (Vector2 s : sites)
