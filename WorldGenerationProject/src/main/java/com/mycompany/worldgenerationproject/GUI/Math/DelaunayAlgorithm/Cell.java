@@ -19,7 +19,7 @@ public class Cell
     
     private Vector2 site;
     private List<Line> edges;
-    private List<Vector2> circs;
+    private List<Circumcenter> circs;
     
     
     
@@ -30,21 +30,21 @@ public class Cell
     {
         site = new Vector2();
         edges = new ArrayList<Line>();
-        circs = new ArrayList<Vector2>();
+        circs = new ArrayList<Circumcenter>();
     }
     
     public Cell(Vector2 site_)
     {
         site = site_;
         edges = new ArrayList<Line>();
-        circs = new ArrayList<Vector2>();
+        circs = new ArrayList<Circumcenter>();
     }
     
     public Cell(Vector2 site_, List<Line> edges_)
     {
         site = site_;
         edges = edges_;
-        circs = new ArrayList<Vector2>();
+        circs = new ArrayList<Circumcenter>();
     }
     
     
@@ -72,13 +72,13 @@ public class Cell
         this.edges = edges;
     }
     
-    public void addCirc(Vector2 circ)
+    public void addCirc(Circumcenter circ)
     {
         if (!circs.contains(circ))
             circs.add(circ);
     }
     
-    public List<Vector2> getCircs()
+    public List<Circumcenter> getCircs()
     {
         return circs;
     }
@@ -125,7 +125,7 @@ public class Cell
     {
         for (int i = circs.size() - 1; i >= 0; i--)
         {
-            if (s.dist(s) < circs.get(i).dist(site))
+            if (s.dist(s) < circs.get(i).getCenter().dist(site))
                 circs.remove(i);
         }
     }

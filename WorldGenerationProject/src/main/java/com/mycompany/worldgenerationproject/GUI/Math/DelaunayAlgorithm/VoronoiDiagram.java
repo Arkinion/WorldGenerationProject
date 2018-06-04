@@ -19,7 +19,7 @@ public class VoronoiDiagram
     
     private Rect bounds;
     private List<Cell> cells;
-    private List<Vector2> centers;
+    private List<Circumcenter> centers;
     
     
     
@@ -33,7 +33,7 @@ public class VoronoiDiagram
         
         List<Vector2> sites = model.getSites();
         cells = new ArrayList<Cell>();
-        centers = new ArrayList<Vector2>();
+        centers = new ArrayList<Circumcenter>();
         
         for (Vector2 s : sites)
         {
@@ -73,11 +73,11 @@ public class VoronoiDiagram
     // Adds a new Cell to the diagram
     public void add(Cell c1)
     {
-        centers = new ArrayList<Vector2>();
+        centers = new ArrayList<Circumcenter>();
         for (Cell c : cells)
         {
             c.cleanCircs(c1.getSite());
-            for (Vector2 cent : c.getCircs())
+            for (Circumcenter cent : c.getCircs())
             {
                 if (!centers.contains(cent))
                     centers.add(cent);
@@ -145,11 +145,15 @@ public class VoronoiDiagram
 
                             if (end != null)
                             {
+                                Circumcenter newCenter = new Circumcenter(end);
+                                newCenter.addPart(c1);
+                                newCenter.addPart(c2);
+                                newCenter.addPart(c3);
                                 if (!centers.contains(end))
-                                    centers.add(end);
-                                c1.addCirc(end);
-                                c2.addCirc(end);
-                                c3.addCirc(end);
+                                    centers.add(newCenter);
+                                c1.addCirc(newCenter);
+                                c2.addCirc(newCenter);
+                                c3.addCirc(newCenter);
                                 //System.out.println(end);
                             }
                         }
@@ -201,17 +205,20 @@ public class VoronoiDiagram
                     
                     Line midLine = Line.perLine( new Line (mid2, between2.normalize() ));
                     
-                    for (Vector2 circ1 : c1.getCircs())
+                    for (Circumcenter circ1 : c1.getCircs())
                     {
-                        if (midLine.onLine(circ1))
+                        Vector2 circ1Cent = circ1.getCenter();
+                        if (midLine.onLine(circ1Cent))
                         {
                             //System.out.println(i + "CIRC1 ON LINE : " + circ1);
-                            for (Vector2 circ2 : c1.getCircs())
+                            for (Circumcenter circ2 : c1.getCircs())
                             {
-                                if (!circ1.equals(circ2) && midLine.onLine(circ2))
+                                Vector2 circ2Cent = circ2.getCenter();
+                                
+                                if (!circ1.equals(circ2) && midLine.onLine(circ2Cent))
                                 {
-                                    midLine.setStart(circ1);
-                                    midLine.setEnd(circ2);
+                                    midLine.setStart(circ1Cent);
+                                    midLine.setEnd(circ2Cent);
                                     c1.addEdge(midLine);
                                 }
                             }
@@ -220,17 +227,42 @@ public class VoronoiDiagram
                             
                             if (infinite)
                             {
-                                for (Vector2 cent : centers)
+                                //System.out.println("RAN");
+                                for (Circumcenter cent : centers)
                                 {
-                                    if (circ1 != cent && midLine.onLine(cent))
+                                    if (!circ1.equals(cent) && midLine.onLine(cent.getCenter()))
+                                    {
                                         infinite = false;
+                                        System.out.println("ONLINE");
+                                    }
                                 }
-
+                                
                                 if (infinite)
                                 {
-                                    // FIX BOUNDING
+                                    Cell c3 = null;
+                                    
+                                    for (Cell c : circ1.getParts())
+                                    {
+                                        if (c != c1 && c != c2)
+                                            c3 = c;
+                                    }
+                                    
                                     midLine.bound(bounds);
-                                    midLine.setStart(circ1);
+                                    boolean sideC3 = midLine.relativity(c3.getSite()) < 0;
+                                    boolean sideStart = midLine.relativity(circ1.getCenter()) < 0;
+                                    
+                                    //System.out.println(cells.size() + " " + sideC3 + "," + sideStart);
+                                    
+                                    if (sideC3 == sideStart)
+                                    {
+                                        System.out.println(midLine + " , " + circ1.getCenter());
+                                        midLine.setStart(circ1.getCenter());
+                                    }
+                                    else
+                                    {
+                                        midLine.setEnd(circ1.getCenter());
+                                    }
+                                    
                                     c1.addEdge(midLine);
                                 }
                             }

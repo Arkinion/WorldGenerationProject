@@ -39,7 +39,7 @@ public class VoronoiDisplayPanel extends javax.swing.JPanel
         sites.add(new Vector2(600, 200));
         sites.add(new Vector2(400, 100));
         sites.add(new Vector2(400, 300));
-        //model.setSites(sites);
+        model.setSites(sites);
         
         diagram = new VoronoiDiagram(model);
         

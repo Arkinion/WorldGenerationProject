@@ -227,6 +227,12 @@ public class Line
         return false;
     }
     
+    public double relativity(Vector2 p)
+    {
+        return  (p.getX() - start.getX())*(end.getY() - start.getY())
+                - (p.getY() - start.getY())*(end.getX() - start.getX());
+    }
+    
     @Override
     public String toString()
     {
