@@ -19,6 +19,7 @@ public class VoronoiDiagram
     
     private Rect bounds;
     private List<Cell> cells;
+    private List<Vector2> centers;
     
     
     
@@ -32,6 +33,7 @@ public class VoronoiDiagram
         
         List<Vector2> sites = model.getSites();
         cells = new ArrayList<Cell>();
+        centers = new ArrayList<Vector2>();
         
         for (Vector2 s : sites)
         {
@@ -71,6 +73,17 @@ public class VoronoiDiagram
     // Adds a new Cell to the diagram
     public void add(Cell c1)
     {
+        centers = new ArrayList<Vector2>();
+        for (Cell c : cells)
+        {
+            c.cleanCircs(c1.getSite());
+            for (Vector2 cent : c.getCircs())
+            {
+                if (!centers.contains(cent))
+                    centers.add(cent);
+            }
+        }
+        
         for (int i = 0; i < cells.size(); i++)
         {
             Cell c2 = cells.get(i);
@@ -88,20 +101,11 @@ public class VoronoiDiagram
                     
                     if (c2 != c3)
                     {
-                        c2.cleanCircs(c1.getSite());
-                        c3.cleanCircs(c1.getSite());
-
                         // The vector from the new cell's site to the current cell's site
                         Vector2 between3 = Vector2.sub(c3.getSite(), c1.getSite());
                         // Finds the midpoint between the two cells
                         Vector2 mid3 = Vector2.add(c1.getSite(), between3.div(2));
                         
-                        // The vector from the new cell's site to the current cell's site
-                        Vector2 between1 = Vector2.sub(c3.getSite(), c2.getSite());
-                        // Finds the midpoint between the two cells
-                        Vector2 mid1 = Vector2.add(c2.getSite(), between1.div(2));
-                        
-                        Line midLine1 = Line.perLine( new Line(mid1, between1.normalize()) );
                         Line midLine2 = Line.perLine( new Line(mid2, between2.normalize()) );
                         Line midLine3 = Line.perLine( new Line(mid3, between3.normalize()) );
                         
@@ -120,17 +124,19 @@ public class VoronoiDiagram
                         c3.addEdge(midLine3);
                         
                         Vector2 end = midLine2.intersect(midLine3);
-                        System.out.println(end);*/
+                        System.out.println(end);
+                        */
 
                         Vector2 end = midLine2.intersect(midLine3);
                         //System.out.println(end);
                         if (end != null)
                         {
                             double radius = end.dist(c1.getSite());
+                            //System.out.println(radius);
 
                             for (Cell c : cells)
                             {
-                                if (end.dist(c.getSite()) <= radius)
+                                if (c != c1 && end.dist(c.getSite()) < radius)
                                 {
                                     end = null;
                                     break;
@@ -139,9 +145,12 @@ public class VoronoiDiagram
 
                             if (end != null)
                             {
+                                if (!centers.contains(end))
+                                    centers.add(end);
                                 c1.addCirc(end);
                                 c2.addCirc(end);
                                 c3.addCirc(end);
+                                //System.out.println(end);
                             }
                         }
                     }
@@ -161,24 +170,27 @@ public class VoronoiDiagram
         // Adding the new cell
         cells.add(c1);
         
-        /*
         if (cells.size() > 2)
         {
             buildEdges();
-        }*/
+        }
     }
     
     private void buildEdges()
     {
+        for (Cell c : cells)
+        {
+            c.setEdges(new ArrayList<Line>());
+        }
+        
+        
         for (int i = 0; i < cells.size(); i++)
         {
             Cell c1 = cells.get(i);
-            c1.setEdges(new ArrayList<Line>());
             
             for (int j = 0; j < cells.size(); j++)
             {
                 Cell c2 = cells.get(j);
-                c2.setEdges(new ArrayList<Line>());
                 
                 if (c1 != c2)
                 {
@@ -203,14 +215,25 @@ public class VoronoiDiagram
                                     c1.addEdge(midLine);
                                 }
                             }
-
-                            if (midLine.getEnd() == null)
+                            
+                            boolean infinite = midLine.getEnd() == null;
+                            
+                            if (infinite)
                             {
-                                midLine.bound(bounds);
-                                midLine.setStart(circ1);
-                                c1.addEdge(midLine);
-                            }
+                                for (Vector2 cent : centers)
+                                {
+                                    if (circ1 != cent && midLine.onLine(cent))
+                                        infinite = false;
+                                }
 
+                                if (infinite)
+                                {
+                                    // FIX BOUNDING
+                                    midLine.bound(bounds);
+                                    midLine.setStart(circ1);
+                                    c1.addEdge(midLine);
+                                }
+                            }
                         }
                     }
                 }

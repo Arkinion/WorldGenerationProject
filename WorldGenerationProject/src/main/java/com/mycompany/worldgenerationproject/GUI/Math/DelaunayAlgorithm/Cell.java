@@ -124,7 +124,7 @@ public class Cell
     {
         for (int i = circs.size() - 1; i >= 0; i--)
         {
-            if (s.dist(site) < circs.get(i).dist(site))
+            if (s.dist(s) < circs.get(i).dist(site))
                 circs.remove(i);
         }
     }

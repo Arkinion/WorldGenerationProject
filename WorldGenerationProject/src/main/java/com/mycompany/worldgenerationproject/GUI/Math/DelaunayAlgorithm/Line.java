@@ -175,24 +175,24 @@ public class Line
             
             if (mx > 0)
             {
-                if (xMin.getY() >= box.getyMin())
+                if (start == null && xMin.getY() >= box.getyMin())
                     start = xMin;
                 else
                     start = yMin;
                 
-                if (xMax.getY() <= box.getyMax())
+                if (end == null && xMax.getY() <= box.getyMax())
                     end = xMax;
                 else
                     end = yMax;
             }
             else
             {
-                if (xMin.getY() <= box.getyMax())
+                if (start == null && xMin.getY() <= box.getyMax())
                     start = xMin;
                 else
                     start = yMax;
                 
-                if (xMax.getY() >= box.getyMin())
+                if (end == null && xMax.getY() >= box.getyMin())
                     end = xMax;
                 else
                     end = yMin;
@@ -207,6 +207,12 @@ public class Line
         if (slope.getX() != 0)
         {
             double mx = slope.getY() / slope.getX();
+            
+            /*if (mx == 0)
+            {
+                return A.getY() == p.getY();
+            }*/
+            
             double y = p.getY() - A.getY();
             double x = mx * (p.getX()-A.getX());
             

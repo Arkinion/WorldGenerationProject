@@ -298,7 +298,7 @@ public class Vector2 implements Comparable<Vector2>
     */
     public double dist(Vector2 v)
     {
-        double inside = (v.getX() - x) + (v.getY() - y);
+        double inside = (v.getX() - x) * (v.getX() - x) + (v.getY() - y) * (v.getY() - y);
         return Math.sqrt(inside);
     }
     
