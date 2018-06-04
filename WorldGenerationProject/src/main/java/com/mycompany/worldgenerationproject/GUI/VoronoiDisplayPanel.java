@@ -5,10 +5,10 @@
  */
 package com.mycompany.worldgenerationproject.GUI;
 
-import com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm.Cell;
-import com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm.Line;
-import com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm.VoronoiDiagram;
-import com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm.VoronoiModel;
+import com.mycompany.worldgenerationproject.GUI.Math.DelaunayAlgorithm.Cell;
+import com.mycompany.worldgenerationproject.GUI.Math.DelaunayAlgorithm.Line;
+import com.mycompany.worldgenerationproject.GUI.Math.DelaunayAlgorithm.VoronoiDiagram;
+import com.mycompany.worldgenerationproject.GUI.Math.DelaunayAlgorithm.VoronoiModel;
 import com.mycompany.worldgenerationproject.GUI.Math.Vector2;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -82,7 +82,7 @@ public class VoronoiDisplayPanel extends javax.swing.JPanel
             {
                 g.drawLine((int)l.getStart().getX(), (int)l.getStart().getY(), (int)l.getEnd().getX(), (int)l.getEnd().getY());
                 
-                System.out.println(l);
+                //System.out.println(l);
             }
             
             Vector2 site = c.getSite();

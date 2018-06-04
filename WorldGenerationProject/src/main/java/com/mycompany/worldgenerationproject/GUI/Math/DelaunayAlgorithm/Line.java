@@ -3,10 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm;
+package com.mycompany.worldgenerationproject.GUI.Math.DelaunayAlgorithm;
 
-import com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm.Rect;
-import com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm.Line;
 import com.mycompany.worldgenerationproject.GUI.Math.Vector2;
 import java.util.ArrayList;
 import java.util.List;
@@ -123,9 +121,9 @@ public class Line
             if (m1 == m2)
                 return null;
 
-            double x = ((m1*A.getY()) - (m2*B.getY()) - A.getY() + B.getY()) / (m1 - m2);
+            double x = ((m1*A.getX()) - (m2*B.getX()) - A.getY() + B.getY()) / (m1 - m2);
 
-            double y = Vector2.add( A , Vector2.mult(slope,x-A.getX()) ).getY();
+            double y = Vector2.add( A , Vector2.mult(slope,(x-A.getX())/slope.getX()) ).getY();
 
             return new Vector2(x, y);
         }
@@ -200,6 +198,27 @@ public class Line
                     end = yMin;
             }
         }
+    }
+    
+    public boolean onLine(Vector2 p)
+    {
+        // (y2 - y1) = mx(x2 - x1)
+        
+        if (slope.getX() != 0)
+        {
+            double mx = slope.getY() / slope.getX();
+            double y = p.getY() - A.getY();
+            double x = mx * (p.getX()-A.getX());
+            
+            if (x == y)
+                return true;
+        }
+        else
+        {
+            if (p.getX() == A.getX())
+                return true;
+        }
+        return false;
     }
     
     @Override

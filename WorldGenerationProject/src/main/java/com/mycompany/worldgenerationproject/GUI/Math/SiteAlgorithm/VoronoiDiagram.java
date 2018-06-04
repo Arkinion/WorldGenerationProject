@@ -5,6 +5,10 @@
  */
 package com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm;
 
+import com.mycompany.worldgenerationproject.GUI.Math.DelaunayAlgorithm.Cell;
+import com.mycompany.worldgenerationproject.GUI.Math.DelaunayAlgorithm.Rect;
+import com.mycompany.worldgenerationproject.GUI.Math.DelaunayAlgorithm.Line;
+import com.mycompany.worldgenerationproject.GUI.Math.DelaunayAlgorithm.VoronoiModel;
 import com.mycompany.worldgenerationproject.GUI.Math.Vector2;
 import java.util.ArrayList;
 import java.util.Iterator;
