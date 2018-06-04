@@ -32,14 +32,14 @@ public class VoronoiDisplayPanel extends javax.swing.JPanel
         
         VoronoiModel model = new VoronoiModel();
         model.setDimensions( new Vector2(775, 565) );
-        //model.generateSites(4);
+        model.generateSites(4);
         
         List<Vector2> sites = new ArrayList<Vector2>();
         sites.add(new Vector2(200, 200));
         sites.add(new Vector2(600, 200));
         sites.add(new Vector2(400, 100));
         sites.add(new Vector2(400, 300));
-        model.setSites(sites);
+        //model.setSites(sites);
         
         diagram = new VoronoiDiagram(model);
         
@@ -86,7 +86,7 @@ public class VoronoiDisplayPanel extends javax.swing.JPanel
             }
             
             Vector2 site = c.getSite();
-            g.fillRect((int)site.getX(), (int)site.getY(), 2, 2);
+            g.fillOval((int)site.getX(), (int)site.getY(), 2, 2);
         }
         
     }

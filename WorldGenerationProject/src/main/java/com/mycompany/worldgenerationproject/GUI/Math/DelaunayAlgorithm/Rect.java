@@ -92,9 +92,9 @@ public class Rect
     
     public boolean contains(Vector2 p)
     {
-        if (p.getX() > xMin
+        if (p.getX() >= xMin
                 && p.getX() < xMax
-                && p.getY() > yMin
+                && p.getY() >= yMin
                 && p.getY() < yMax)
             return true;
         return false;

@@ -74,7 +74,8 @@ public class Cell
     
     public void addCirc(Vector2 circ)
     {
-        circs.add(circ);
+        if (!circs.contains(circ))
+            circs.add(circ);
     }
     
     public List<Vector2> getCircs()
