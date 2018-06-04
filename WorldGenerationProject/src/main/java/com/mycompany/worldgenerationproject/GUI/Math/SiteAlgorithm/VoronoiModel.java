@@ -73,15 +73,15 @@ public class VoronoiModel
             {
                 contains = false;
                 
-                x = (int)(Math.random() * (dimensions.getX() + 1));
-                y = (int)(Math.random() * (dimensions.getY() + 1));
+                x = (int)(Math.random() * (dimensions.getX()));
+                y = (int)(Math.random() * (dimensions.getY()));
                 
                 for (Vector2 v : sites)
                 {
                     if (x == v.getX() && y == v.getY())
                         contains = true;
                 }
-            } while (!contains);
+            } while (contains);
             
             sites.add(new Vector2(x, y));
         }

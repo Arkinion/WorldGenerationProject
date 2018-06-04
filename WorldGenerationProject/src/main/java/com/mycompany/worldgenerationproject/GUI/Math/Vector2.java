@@ -110,21 +110,27 @@ public class Vector2 implements Comparable<Vector2>
     @Override
     public int compareTo (Vector2 other)
     {
-            if (getY() == other.getY())
-            {
-                if (getX() == other.getX()) return 0;
-                else if (getX() > other.getX()) return 1;
-                else return -1;
-            }
-            else if (getY() > other.getY())
-            {
-                return 1;
-            }
-            else
-            {
-		return -1;
-            }
-	}
+        if (getY() == other.getY())
+        {
+            if (getX() == other.getX()) return 0;
+            else if (getX() > other.getX()) return 1;
+            else return -1;
+        }
+        else if (getY() > other.getY())
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "(" + x + "," + y + ")";
+    }
     
     /*
      * Returns the magnitude of this vector.

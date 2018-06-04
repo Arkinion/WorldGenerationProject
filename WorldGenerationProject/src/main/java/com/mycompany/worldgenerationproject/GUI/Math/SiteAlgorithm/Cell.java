@@ -81,14 +81,14 @@ public class Cell
             
             if (v1.cross(v2) < 0)
             {
-                v1 = Vector2.sub(p, edge.getA());
+                v1 = Vector2.sub(p, edge.getStart());
                 
                 if (v1.cross(v2) > 0)
                     return false;
             }
             else
             {
-                v1 = Vector2.sub(p, edge.getA());
+                v1 = Vector2.sub(p, edge.getStart());
                 
                 if (v1.cross(v2) < 0)
                 {

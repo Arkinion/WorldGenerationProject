@@ -5,8 +5,10 @@
  */
 package com.mycompany.worldgenerationproject.GUI;
 
-import com.mycompany.worldgenerationproject.GUI.Math.Fortune.VEdge;
-import com.mycompany.worldgenerationproject.GUI.Math.Fortune.Voronoi;
+import com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm.Cell;
+import com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm.Line;
+import com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm.VoronoiDiagram;
+import com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm.VoronoiModel;
 import com.mycompany.worldgenerationproject.GUI.Math.Vector2;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -19,7 +21,7 @@ import java.util.List;
 public class VoronoiDisplayPanel extends javax.swing.JPanel
 {
     
-    Voronoi diagram;
+    VoronoiDiagram diagram;
 
     /**
      * Creates new form VoronoiDisplayPanel
@@ -28,23 +30,18 @@ public class VoronoiDisplayPanel extends javax.swing.JPanel
     {
         initComponents();
         
-        diagram = new Voronoi();
+        VoronoiModel model = new VoronoiModel();
+        model.setDimensions( new Vector2(775, 565) );
+        //model.generateSites(4);
         
         List<Vector2> sites = new ArrayList<Vector2>();
-        
-        /*
-        for (int i = 0; i < 2; i++)
-        {
-            double x = Math.random() * 775;
-            double y = Math.random() * 565;
-            sites.add(new Vector2(x, y));
-        }
-        */
         sites.add(new Vector2(200, 200));
-        sites.add(new Vector2(200, 400));
-        //sites.add(new Vector2(400, 400));
+        sites.add(new Vector2(600, 200));
+        sites.add(new Vector2(400, 100));
+        sites.add(new Vector2(400, 300));
+        model.setSites(sites);
         
-        diagram.buildEdges(sites, 775, 565);
+        diagram = new VoronoiDiagram(model);
         
     }
 
@@ -79,18 +76,17 @@ public class VoronoiDisplayPanel extends javax.swing.JPanel
         
         super.paintComponent(g);
         
-        for (VEdge e : diagram.getEdges())
+        for (Cell c : diagram.getCells())
         {
-            if (e.getEnd() != null)
+            for (Line l : c.getEdges())
             {
-                g.drawLine((int)e.getStart().getX(), (int)e.getStart().getY(),
-                        (int)e.getEnd().getY(), (int)e.getEnd().getY());
+                g.drawLine((int)l.getStart().getX(), (int)l.getStart().getY(), (int)l.getEnd().getX(), (int)l.getEnd().getY());
                 
-                System.out.println(e.getStart().getX());
-                System.out.println(e.getStart().getY());
-                System.out.println(e.getEnd().getX());
-                System.out.println(e.getEnd().getY());
+                System.out.println(l);
             }
+            
+            Vector2 site = c.getSite();
+            g.fillRect((int)site.getX(), (int)site.getY(), 2, 2);
         }
         
     }

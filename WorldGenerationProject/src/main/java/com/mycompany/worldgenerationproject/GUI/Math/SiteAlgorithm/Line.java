@@ -6,6 +6,8 @@
 package com.mycompany.worldgenerationproject.GUI.Math.SiteAlgorithm;
 
 import com.mycompany.worldgenerationproject.GUI.Math.Vector2;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -85,6 +87,22 @@ public class Line
     
     
     
+    @Override
+    public boolean equals(Object o)
+    {
+        if (o instanceof Line)
+        {
+            Line l = (Line)o;
+            
+            if (l.getA().equals(l.A)
+                    && l.getSlope().equals(l.slope)
+                    && l.getStart().equals(l.start)
+                    && l.getEnd().equals(l.end))
+                return true;
+        }
+        return false;
+    }
+    
     public Vector2 asVector()
     {
         return Vector2.sub(end, start);
@@ -92,47 +110,100 @@ public class Line
     
     public Vector2 intersect(Line l)
     {
-        Vector2 B = l.getA();
+        //System.out.println(l.slope);
+        if (slope.getX() != 0 && l.slope.getX() != 0)
+        {
+            Vector2 B = l.getA();
 
-        double m1 = slope.getY()/slope.getX();
-        double m2 = l.slope.getY()/l.slope.getX();
-        
-        double x = ((m1*A.getY()) - (m2*B.getY()) - A.getY() + B.getY()) / (m1 - m2);
-        
-        double y = Vector2.add( A , Vector2.mult(slope,x-A.getX()) ).getY();
-        
-        return new Vector2(x, y);
+            double m1 = slope.getY()/slope.getX();
+            double m2 = l.slope.getY()/l.slope.getX();
+            
+            if (m1 == m2)
+                return null;
+
+            double x = ((m1*A.getY()) - (m2*B.getY()) - A.getY() + B.getY()) / (m1 - m2);
+
+            double y = Vector2.add( A , Vector2.mult(slope,x-A.getX()) ).getY();
+
+            return new Vector2(x, y);
+        }
+        else if (slope.getX() == 0 && l.slope.getX() == 0)
+        {}
+        else
+        {
+            if (slope.getX() == 0)
+            {
+                double xt = (A.getX() - l.A.getX()) / l.slope.getX();
+                return Vector2.add( l.A, Vector2.mult(l.slope, xt) );
+            }
+            else
+            {
+                double xt = (l.A.getX() - A.getX()) / slope.getX();
+                return Vector2.add( A, Vector2.mult(slope, xt) );
+            }
+        }
+        return null;
     }
     
     public void bound(Rect box)
     {
-        double x1;
-        double y1;
-        double x2;
-        double y2;
 
         if (slope.getX() == 0)
         {
-            x1 = A.getX();
-            y1 = box.getyMin();
-            x2 = A.getX();
-            y2 = box.getyMax();
+            start = new Vector2(A.getX(), box.getyMin());
+            end = new Vector2(A.getX(), box.getyMax());
         }
+        else if (slope.getY() == 0)
+        {
+            start = new Vector2(box.getxMin(), A.getY());
+            end = new Vector2(box.getxMax(), A.getY());
+        }
+        // wtf is this. it doesn't work or make sense
         else
         {
+            double mx = slope.getY() / slope.getX();
+            
             double xt1 = (box.getxMin() - A.getX()) / slope.getX();
             double yt1 = (box.getyMin() - A.getY()) / slope.getY();
             double xt2 = (box.getxMax() - A.getX()) / slope.getX();
             double yt2 = (box.getyMax() - A.getY()) / slope.getY();
             
-            x1 = Vector2.add(A, Vector2.mult(slope.div(slope.getX()), xt1)).getX();
-            y1 = Vector2.add(A, Vector2.mult(slope.div(slope.getY()), yt1)).getY();
-            x2 = Vector2.add(A, Vector2.mult(slope.div(slope.getX()), xt2)).getX();
-            y2 = Vector2.add(A, Vector2.mult(slope.div(slope.getY()), yt2)).getY();
+            Vector2 xMin = Vector2.add(A, Vector2.mult(slope, xt1));
+            Vector2 yMin = Vector2.add(A, Vector2.mult(slope, yt1));
+            Vector2 xMax = Vector2.add(A, Vector2.mult(slope, xt2));
+            Vector2 yMax = Vector2.add(A, Vector2.mult(slope, yt2));
+            
+            if (mx > 0)
+            {
+                if (xMin.getY() >= box.getyMin())
+                    start = xMin;
+                else
+                    start = yMin;
+                
+                if (xMax.getY() <= box.getyMax())
+                    end = xMax;
+                else
+                    end = yMax;
+            }
+            else
+            {
+                if (xMin.getY() <= box.getyMax())
+                    start = xMin;
+                else
+                    start = yMax;
+                
+                if (xMax.getY() >= box.getyMin())
+                    end = xMax;
+                else
+                    end = yMin;
+            }
         }
-
-        start = new Vector2(x1, y1);
-        end = new Vector2(x2, y2);
+    }
+    
+    @Override
+    public String toString()
+    {
+        return start + " : " + end;
     }
     
     
