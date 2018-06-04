@@ -45,6 +45,14 @@ public class VoronoiDisplayPanel extends javax.swing.JPanel
         diagram = new VoronoiDiagram(model);
         
     }
+    
+    public void reGenerateDiagram()
+    {
+        VoronoiModel model = new VoronoiModel();
+        model.setDimensions( new Vector2(775, 565) );
+        model.generateSites(4);
+        diagram = new VoronoiDiagram(model);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
