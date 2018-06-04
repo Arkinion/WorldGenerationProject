@@ -233,6 +233,24 @@ public class Line
                 - (p.getY() - start.getY())*(end.getX() - start.getX());
     }
     
+    public boolean parallel(Line l)
+    {
+        if (l.slope.getX() == 0 && slope.getX() == 0)
+        {
+            return true;
+        }
+        else if (l.slope.getY() == 0 && slope.getY() == 0)
+        {
+            return true;
+        }
+        else
+        {   
+            if (slope.getY() == l.slope.getY() && slope.getX() == l.slope.getY())
+                return true;
+        }
+        return false;
+    }
+    
     @Override
     public String toString()
     {

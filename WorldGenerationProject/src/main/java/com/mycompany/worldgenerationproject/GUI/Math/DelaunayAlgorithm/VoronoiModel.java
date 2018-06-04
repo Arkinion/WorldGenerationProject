@@ -7,6 +7,7 @@ package com.mycompany.worldgenerationproject.GUI.Math.DelaunayAlgorithm;
 
 import com.mycompany.worldgenerationproject.GUI.Math.Vector2;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public class VoronoiModel
 {
     
     private Vector2 dimensions;
-    private List<Vector2> sites;
+    private HashSet<Vector2> sites;
     
     
     
@@ -27,7 +28,7 @@ public class VoronoiModel
     public VoronoiModel()
     {
         dimensions = new Vector2();
-        sites = new ArrayList<Vector2>();
+        sites = new HashSet<Vector2>();
     }
     
     
@@ -45,12 +46,12 @@ public class VoronoiModel
         this.dimensions = dimensions;
     }
     
-    public List<Vector2> getSites()
+    public HashSet<Vector2> getSites()
     {
         return sites;
     }
     
-    public void setSites(List<Vector2> sites)
+    public void setSites(HashSet<Vector2> sites)
     {
         this.sites = sites;
     }
@@ -62,7 +63,7 @@ public class VoronoiModel
     
     public void generateSites(int s)
     {
-        sites = new ArrayList<Vector2>();
+        sites = new HashSet<Vector2>();
         
         for (int i = 0; i < s; i++)
         {

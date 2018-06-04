@@ -7,6 +7,7 @@ package com.mycompany.worldgenerationproject.GUI.Math.DelaunayAlgorithm;
 
 import com.mycompany.worldgenerationproject.GUI.Math.Vector2;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class VoronoiDiagram
         Vector2 v = model.getDimensions();
         bounds = new Rect(0, v.getX(), 0, v.getY());
         
-        List<Vector2> sites = model.getSites();
+        HashSet<Vector2> sites = model.getSites();
         cells = new ArrayList<Cell>();
         centers = new ArrayList<Circumcenter>();
         
@@ -154,7 +155,7 @@ public class VoronoiDiagram
                                 c1.addCirc(newCenter);
                                 c2.addCirc(newCenter);
                                 c3.addCirc(newCenter);
-                                //System.out.println(end);
+                                //System.out.println(newCenter);
                             }
                         }
                     }
@@ -178,6 +179,12 @@ public class VoronoiDiagram
         {
             buildEdges();
         }
+        
+        /*System.out.println("BEGIN");
+        for (Circumcenter c : centers)
+        {
+            System.out.println(c.getCenter() + " :::: " + c.getParts());
+        }*/
     }
     
     private void buildEdges()
@@ -215,7 +222,7 @@ public class VoronoiDiagram
                             {
                                 Vector2 circ2Cent = circ2.getCenter();
                                 
-                                if (!circ1.equals(circ2) && midLine.onLine(circ2Cent))
+                                if (!circ1.equals(circ2) && midLine.onLine(mid2) /*midLine.parallel( new Line (circ1.getCenter(), Vector2.sub(circ2.getCenter(), circ1.getCenter()).normalize()))*/)
                                 {
                                     midLine.setStart(circ1Cent);
                                     midLine.setEnd(circ2Cent);
@@ -233,7 +240,7 @@ public class VoronoiDiagram
                                     if (!circ1.equals(cent) && midLine.onLine(cent.getCenter()))
                                     {
                                         infinite = false;
-                                        System.out.println("ONLINE");
+                                        //System.out.println("ONLINE");
                                     }
                                 }
                                 
@@ -248,14 +255,17 @@ public class VoronoiDiagram
                                     }
                                     
                                     midLine.bound(bounds);
-                                    boolean sideC3 = midLine.relativity(c3.getSite()) < 0;
-                                    boolean sideStart = midLine.relativity(circ1.getCenter()) < 0;
+                                    Line tester = new Line(circ1.getCenter(), between2.normalize());
+                                    tester.bound(bounds);
+                                    
+                                    boolean sideC3 = tester.relativity(c3.getSite()) < 0;
+                                    boolean sideStart = tester.relativity(midLine.getStart()) < 0;
                                     
                                     //System.out.println(cells.size() + " " + sideC3 + "," + sideStart);
                                     
                                     if (sideC3 == sideStart)
                                     {
-                                        System.out.println(midLine + " , " + circ1.getCenter());
+                                        //System.out.println(midLine + " , " + circ1.getCenter());
                                         midLine.setStart(circ1.getCenter());
                                     }
                                     else
